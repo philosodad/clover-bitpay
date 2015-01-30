@@ -1,0 +1,5 @@
+<root>
+    <item name='com.bitpay.sdk.android.interfaces.BitpayPromiseCallback'>
+        <annotation name='org.jetbrains.annotations.Nullable' />
+    </item>
+</root>
