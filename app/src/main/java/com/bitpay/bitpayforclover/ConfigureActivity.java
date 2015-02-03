@@ -14,6 +14,8 @@ import com.bitpay.sdk.android.interfaces.BitpayPromiseCallback;
 import com.bitpay.sdk.android.interfaces.PromiseCallback;
 import com.bitpay.sdk.controller.BitPay;
 import com.bitpay.sdk.controller.BitPayException;
+import com.bitpay.sdk.controller.KeyUtils;
+import com.google.bitcoin.core.ECKey;
 
 
 public class ConfigureActivity extends ActionBarActivity implements View.OnClickListener{
@@ -21,6 +23,7 @@ public class ConfigureActivity extends ActionBarActivity implements View.OnClick
     public static final String TAG = "Pairing Status: ";
     private EditText pairingCode;
     private Button submitButton;
+    /* package */ BitPayAndroid client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,20 @@ public class ConfigureActivity extends ActionBarActivity implements View.OnClick
     public void onClick(View view) {
         String clientName = "whyaname";
         String code = pairingCode.getText().toString();
-        BitPayAndroid client = new BitPayAndroid(clientName, "https://test.bitpay.com/");
+        ECKey ecKey = KeyUtils.createEcKey();
+        String ecKeyHexa = KeyUtils.exportPrivateKeyToHexa(ecKey);
+        BitPayAndroid.getClient(ecKeyHexa, "https://test.bitpay.com").then(new BitpayPromiseCallback() {
+            @Override
+            public void onSuccess(BitPayAndroid bitPayAndroid) {
+                client = bitPayAndroid;
+            }
+
+            @Override
+            public void onError(BitPayException e) {
+                Log.d(TAG, "no client");
+            }
+            });
+
         client.authorizeClientAsync(code).then(new PromiseCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -72,5 +88,7 @@ public class ConfigureActivity extends ActionBarActivity implements View.OnClick
                 Log.d(TAG, "failure");
             }
         });
+
+
     }
 }
