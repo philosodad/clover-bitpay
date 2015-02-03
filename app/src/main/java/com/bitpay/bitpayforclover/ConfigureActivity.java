@@ -62,13 +62,24 @@ public class ConfigureActivity extends ActionBarActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         String clientName = "whyaname";
-        String code = pairingCode.getText().toString();
+        final String code = pairingCode.getText().toString();
         ECKey ecKey = KeyUtils.createEcKey();
         String ecKeyHexa = KeyUtils.exportPrivateKeyToHexa(ecKey);
         BitPayAndroid.getClient(ecKeyHexa, "https://test.bitpay.com").then(new BitpayPromiseCallback() {
             @Override
             public void onSuccess(BitPayAndroid bitPayAndroid) {
-                client = bitPayAndroid;
+
+                bitPayAndroid.authorizeClientAsync(code).then(new PromiseCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "success");
+                    }
+
+                    @Override
+                    public void onError(BitPayException e) {
+                        Log.d(TAG, "failure");
+                    }
+                });
             }
 
             @Override
@@ -77,17 +88,6 @@ public class ConfigureActivity extends ActionBarActivity implements View.OnClick
             }
             });
 
-        client.authorizeClientAsync(code).then(new PromiseCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "success");
-            }
-
-            @Override
-            public void onError(BitPayException e) {
-                Log.d(TAG, "failure");
-            }
-        });
 
 
     }
