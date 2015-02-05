@@ -1,8 +1,8 @@
 package com.bitpay.bitpayforclover;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ConfigureActivity extends ActionBarActivity implements View.OnClickListener{
+public class ConfigureActivity extends Activity implements View.OnClickListener{
 
     public static final String TAG = "Pairing Status: ";
     public Map<String, String> tokenMap;
