@@ -18,14 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CreateBitPayTender"
-            android:label="@string/title_activity_create_bit_pay_tender" >
-        </activity>
-        <activity
-            android:name=".BitPayTenderHandler"
-            android:label="@string/title_activity_bit_pay_tender_handler" >
-        </activity>
+
     </application>
 
 </manifest>

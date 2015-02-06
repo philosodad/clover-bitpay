@@ -1,7 +1,10 @@
 package com.bitpay.bitpayforclover;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +20,10 @@ import com.bitpay.sdk.android.interfaces.PromiseCallback;
 import com.bitpay.sdk.controller.BitPayException;
 import com.bitpay.sdk.controller.KeyUtils;
 import com.bitpay.sdk.model.Token;
+import com.clover.sdk.v1.tender.Tender;
+import com.clover.sdk.v1.tender.TenderConnector;
+import com.clover.sdk.util.CloverAccount;
+
 import com.google.bitcoin.core.ECKey;
 
 import java.io.File;
@@ -39,6 +46,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
     private Button submitButton;
     private TextView clientIdView;
     private TextView tokenView;
+    private TextView tenderList;
     private String code;
     private String KEYFILE;
     private String TOKENFILE;
@@ -83,7 +91,6 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
             tokenView.setText("No Token");
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,7 +140,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
                 e.printStackTrace();
             }
         });
-        Log.d(TAG, "I exist here");
+        Log.d(TAG, "Left the onClick method");
 
     }
 
