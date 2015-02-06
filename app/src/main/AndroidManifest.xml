@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bitpay.bitpayforclover">
+    package="com.bitpay.bitpayforclover" >
 
     <application
-        tools:replace="android:label"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        tools:replace="android:label" >
         <activity
             android:name=".ConfigureActivity"
             android:label="@string/app_name" >
@@ -17,6 +17,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateBitPayTender"
+            android:label="@string/title_activity_create_bit_pay_tender" >
+        </activity>
+        <activity
+            android:name=".BitPayTenderHandler"
+            android:label="@string/title_activity_bit_pay_tender_handler" >
         </activity>
     </application>
 
