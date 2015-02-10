@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bitpay.bitpayforclover" >
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -11,7 +13,8 @@
         tools:replace="android:label" >
         <activity
             android:name=".ConfigureActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,5 +23,4 @@
         </activity>
 
     </application>
-
 </manifest>

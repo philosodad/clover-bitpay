@@ -2,9 +2,12 @@ package com.bitpay.bitpayforclover;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,9 +23,11 @@ import com.bitpay.sdk.android.interfaces.PromiseCallback;
 import com.bitpay.sdk.controller.BitPayException;
 import com.bitpay.sdk.controller.KeyUtils;
 import com.bitpay.sdk.model.Token;
+import com.clover.sdk.util.CloverAccount;
+import com.clover.sdk.util.CloverAuth;
+import com.clover.sdk.v1.ResultStatus;
 import com.clover.sdk.v1.tender.Tender;
 import com.clover.sdk.v1.tender.TenderConnector;
-import com.clover.sdk.util.CloverAccount;
 
 import com.google.bitcoin.core.ECKey;
 
@@ -40,17 +45,26 @@ import java.util.Map;
 public class ConfigureActivity extends Activity implements View.OnClickListener{
 
     public static final String TAG = "Pairing Status: ";
+    private static final int REQUEST_ACCOUNT = 1;
+
     public Map<String, String> tokenMap;
     public List<Token> tokens;
     private EditText pairingCode;
     private Button submitButton;
+    private Button tenderButton;
     private TextView clientIdView;
     private TextView tokenView;
-    private TextView tenderList;
+    private TextView tenderResult;
     private String code;
     private String KEYFILE;
     private String TOKENFILE;
     private Context cntxt;
+    private TenderConnector tenderConnector;
+    private Account account;
+
+    private CloverAuth.AuthResult mCloverAuth;
+
+
 
     /* package */ BitPayAndroid client;
 
@@ -63,10 +77,15 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
         submitButton = (Button) findViewById(R.id.submit_pair);
         clientIdView = (TextView) findViewById(R.id.clientID);
         tokenView = (TextView) findViewById(R.id.tokenValue);
+        tenderResult = (TextView) findViewById(R.id.tenderResult);
         submitButton.setOnClickListener(this);
+        tenderButton = (Button) findViewById(R.id.tenderButton);
         KEYFILE = "ec_file";
         TOKENFILE = "token_file";
         cntxt = this.getApplicationContext();
+
+
+        account = CloverAccount.getAccount(this);
         ArrayList<String> keyFind = readFromFile(KEYFILE);
         if ( keyFind.get(0).equals("OK") ) {
             String key = keyFind.get(1);
@@ -90,6 +109,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
         else {
             tokenView.setText("No Token");
         }
+        getCloverAuth();
     }
 
     @Override
@@ -219,5 +239,64 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
             whatHappened = e.getMessage();
         }
         return whatHappened;
+    }
+
+    public void createTender(View view){
+        final String tenderName = "bitcoin";
+        final String packageName = getPackageName();
+        tenderConnector = new TenderConnector(this, account, null);
+
+
+        tenderConnector.checkAndCreateTender(tenderName, packageName, true, false, new TenderConnector.TenderCallback<Tender>() {
+            @Override
+            public void onServiceSuccess(Tender result, ResultStatus status) {
+                super.onServiceSuccess(result, status);
+                String text = "Custom Tender:\n";
+                text += "  " + result.getId() + " , " + result.getLabel() + " , " + result.getLabelKey() + " , " + result.getEnabled() + " , " + result.getOpensCashDrawer() + "\n";
+                tenderResult.setText(text);
+            }
+
+            @Override
+            public void onServiceFailure(ResultStatus status) {
+                super.onServiceFailure(status);
+                tenderResult.setText(status.getStatusMessage());
+            }
+
+            @Override
+            public void onServiceConnectionFailure() {
+                super.onServiceConnectionFailure();
+                tenderResult.setText("Service Connection Failure");
+            }
+        });
+    }
+
+    private void getCloverAuth() {
+        // This needs to be done on a background thread
+        new AsyncTask<Void, Void, CloverAuth.AuthResult>() {
+            @Override
+            protected CloverAuth.AuthResult doInBackground(Void... params) {
+                try {
+                    return CloverAuth.authenticate(ConfigureActivity.this, account);
+                } catch (OperationCanceledException e) {
+                    Log.e(TAG, "Authentication cancelled", e);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error retrieving authentication", e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(CloverAuth.AuthResult result) {
+                mCloverAuth = result;
+
+                // To get a valid auth result you need to have installed the app from the App Market. The Clover servers
+                // only creates the token once installed the first time.
+                if (mCloverAuth != null && mCloverAuth.authToken !=null) {
+                    Log.d(TAG, mCloverAuth.authToken);
+                } else {
+                    Log.d(TAG, "Couldn't get Token");
+                }
+            }
+        }.execute();
     }
 }
