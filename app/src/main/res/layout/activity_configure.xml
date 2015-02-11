@@ -108,5 +108,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Invoice"
+        android:id="@+id/invoiceButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="263dp"
+        android:layout_marginEnd="263dp"
+        android:onClick="createInvoice" />
+
 
 </RelativeLayout>

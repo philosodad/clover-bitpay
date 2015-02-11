@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,6 +26,7 @@ import com.bitpay.sdk.android.interfaces.PromiseCallback;
 import com.bitpay.sdk.android.interfaces.RatesPromiseCallback;
 import com.bitpay.sdk.controller.BitPayException;
 import com.bitpay.sdk.controller.KeyUtils;
+import com.bitpay.sdk.model.Rate;
 import com.bitpay.sdk.model.Rates;
 import com.bitpay.sdk.model.Token;
 import com.clover.sdk.util.CloverAccount;
@@ -56,6 +58,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
     private EditText pairingCode;
     private Button submitButton;
     private Button tenderButton;
+    private Button invoiceButton;
     private TextView clientIdView;
     private TextView tokenView;
     private TextView tenderResult;
@@ -65,6 +68,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
     private Context cntxt;
     private TenderConnector tenderConnector;
     private Account account;
+    private Activity activity;
 
     private Spinner mSpinner;
 
@@ -86,9 +90,12 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
         tenderResult = (TextView) findViewById(R.id.tenderResult);
         submitButton.setOnClickListener(this);
         tenderButton = (Button) findViewById(R.id.tenderButton);
+        invoiceButton = (Button) findViewById(R.id.invoiceButton);
         KEYFILE = "ec_file";
         TOKENFILE = "token_file";
         cntxt = this.getApplicationContext();
+
+        activity = this;
 
 
         account = CloverAccount.getAccount(this);
@@ -116,6 +123,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
             tokenView.setText("No Token");
         }
         getCloverAuth();
+        loadRates();
     }
 
     @Override
@@ -168,6 +176,38 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
         });
         Log.d(TAG, "Left the onClick method");
 
+    }
+
+    protected Dialog showLoading() {
+        Dialog dialog = new Dialog(activity);
+        dialog.setTitle("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+        Log.d(TAG, "show loading!");
+        return dialog;
+    }
+
+    private void loadRates(){
+        final Dialog dialog = showLoading();
+        Log.d(TAG, "We started the load rates method");
+        client.getRatesAsync().then(new RatesPromiseCallback() {
+            @Override
+            public void onSuccess(Rates rates) {
+                mSpinner.setAdapter(new ArrayAdapter<Rate>(cntxt, android.R.layout.simple_spinner_dropdown_item, rates.getRates()));
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onError(BitPayException e) {
+                dialog.dismiss();
+                Log.d("Connection Error", "An unexpected error occurred: " + e.getMessage());
+            }
+        });
+        dialog.dismiss();
+    }
+
+    public void createInvoice(View view) {
+        Log.d(TAG, "You clicked the invoice button");
     }
 
     private void authorizeClient(){

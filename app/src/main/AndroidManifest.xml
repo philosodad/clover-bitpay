@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PayWithBitcoin"
+            android:name=".BitcoinWithBitPayTenderHandler"
             android:label="@string/title_activity_pay_with_bitcoin" >
         </activity>
     </application>

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class PayWithBitcoin extends Activity {
+public class BitcoinWithBitPayTenderHandler extends Activity {
     private long amount;
     private String orderId;
     private String merchantId;
