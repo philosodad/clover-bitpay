@@ -8,4 +8,7 @@
     <string name="sin_label">Client ID</string>
     <string name="token_label">Token</string>
     <string name="create_tender">Create Tender</string>
+    <string name="title_activity_pay_with_bitcoin">PayWithBitcoin</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

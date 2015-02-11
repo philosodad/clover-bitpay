@@ -39,21 +39,20 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/sin_label"
         android:id="@+id/codeLabel"
-        android:layout_marginLeft="78dp"
-        android:layout_marginStart="78dp"
-        android:layout_above="@+id/clientID"
-        android:layout_toRightOf="@+id/enterPair"
-        android:layout_toEndOf="@+id/enterPair" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/submit_pair"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/clientID"
-        android:layout_alignBottom="@+id/pairingCodeField"
-        android:layout_alignTop="@+id/pairingCodeField"
         android:layout_alignLeft="@+id/codeLabel"
-        android:layout_alignStart="@+id/codeLabel" />
+        android:layout_alignStart="@+id/codeLabel"
+        android:layout_below="@+id/codeLabel"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,11 +60,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/token_label"
         android:id="@+id/tokenLabel"
-        android:layout_marginRight="433dp"
-        android:layout_marginEnd="433dp"
-        android:layout_alignTop="@+id/codeLabel"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/clientID"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,9 +73,8 @@
         android:layout_alignLeft="@+id/tokenLabel"
         android:layout_alignStart="@+id/tokenLabel"
         android:layout_toStartOf="@+id/tokenLabel"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/clientID" />
+        android:layout_below="@+id/tokenLabel"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -110,5 +107,6 @@
         android:layout_below="@+id/tenderButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>

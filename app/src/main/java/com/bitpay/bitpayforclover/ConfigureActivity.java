@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,13 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bitpay.sdk.android.BitPayAndroid;
 import com.bitpay.sdk.android.interfaces.BitpayPromiseCallback;
 import com.bitpay.sdk.android.interfaces.PromiseCallback;
+import com.bitpay.sdk.android.interfaces.RatesPromiseCallback;
 import com.bitpay.sdk.controller.BitPayException;
 import com.bitpay.sdk.controller.KeyUtils;
+import com.bitpay.sdk.model.Rates;
 import com.bitpay.sdk.model.Token;
 import com.clover.sdk.util.CloverAccount;
 import com.clover.sdk.util.CloverAuth;
@@ -61,6 +65,8 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
     private Context cntxt;
     private TenderConnector tenderConnector;
     private Account account;
+
+    private Spinner mSpinner;
 
     private CloverAuth.AuthResult mCloverAuth;
 
@@ -242,7 +248,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
     }
 
     public void createTender(View view){
-        final String tenderName = "bitcoin";
+        final String tenderName = "Bitcoin with BitPay";
         final String packageName = getPackageName();
         tenderConnector = new TenderConnector(this, account, null);
 
@@ -299,4 +305,5 @@ public class ConfigureActivity extends Activity implements View.OnClickListener{
             }
         }.execute();
     }
+
 }

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bitpay.bitpayforclover" >
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -13,14 +14,17 @@
         tools:replace="android:label" >
         <activity
             android:name=".ConfigureActivity"
-            android:label="@string/app_name"
-            >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".PayWithBitcoin"
+            android:label="@string/title_activity_pay_with_bitcoin" >
+        </activity>
     </application>
+
 </manifest>
