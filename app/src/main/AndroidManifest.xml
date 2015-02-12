@@ -24,6 +24,11 @@
         <activity
             android:name=".BitcoinWithBitPayTenderHandler"
             android:label="@string/title_activity_pay_with_bitcoin" >
+            <intent-filter>
+                <action android:name="clover.intent.action.PAY"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
     </application>
 
